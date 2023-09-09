@@ -1,124 +1,207 @@
-// Import the MongoDB Node.js driver
-const MongoClient = require('mongodb').MongoClient;
+//  3 (a) Creating Entities
+db.createCollection('Items');
+db.createCollection('Users');
+db.createCollection('Category');
+db.createCollection('Customer');
+db.createCollection('Deliver');
+db.createCollection('Deliver_Details');
+db.createCollection('Item_Stock');
+db.createCollection('Role');
+db.createCollection('Supplier');
+db.createCollection('Users_Items');
+db.createCollection('Order_Items');
+db.createCollection('Users_Order_Item');
+db.createCollection('Items_User_Item');
+db.createCollection('Order_Items');
+// 3 (b) Inserting Records
+// Users Entity
 
-// Connection URL and database name
-const url = 'mongodb://localhost:27017';
-const dbName = 'inventory';
+db.Users.insertMany([
+	{
+		_id: 1,
+		Name: 'John',
+		Address: 'Jos',
+		Password: 'john',
+		Email: 'john@gmail.com',
+		Created_at: Date(),
+		Phone_number: '07033751434',
+		Sex: 'Male',
+	},
+	{
+		_id: 1,
+		Name: 'Peter',
+		Address: 'Kogi',
+		Password: 'Peter',
+		Email: 'peter@gmail.com',
+		Created_at: Date(),
+		Phone_number: '07033751439',
+		Sex: 'Female',
+	},
+]);
+// Role Entity
+db.Role.insertOne({ _id: 1, Role: 'Admin', Created_at: Date() });
+db.Role.insertOne({ _id: 2, Role: 'User', Created_at: Date() });
+//  Items Entity
+db.Items.insertMany([
+	{
+		_id: 1,
+		Name: 'Shirt',
+		Price: 200,
+		Size: 'small',
+		Description: 'Silk material ',
+		Created_at: Date(),
+	},
+	{
+		_id: 1,
+		Name: 'Sleeveless',
+		Price: 240,
+		Size: 'Large',
+		Description: 'Cotton material ',
+		Created_at: Date(),
+	},
+]);
+// Users_Items Entity
+db.Users_Items.insertOne({
+	_id: 1,
+	Users_id: 2,
+	Items_id: 1,
+	Created_at: Date(),
+});
+db.Users_Items.insertOne({
+	_id: 2,
+	Users_id: 1,
+	Items_id: 2,
+	Created_at: Date(),
+});
+// Category Entity
+db.Category.insertMany([
+	{ _id: 1, Category: 'Silk', Items_id: 1, Created_at: Date() },
+	{ _id: 2, Category: 'Cotton', Items_id: 2, Created_at: Date() },
+]);
+// Item_Stock Entity
+db.Item_Stock.insertOne({
+	_id: 1,
+	Item_Quantity: '200pcs',
+	Category_id: 2,
+	Created_at: Date(),
+});
+db.Item_Stock.insertOne({
+	_id: 2,
+	Item_Quantity: '400pcs',
+	Category_id: 1,
+	Created_at: Date(),
+});
+// Order_Item Entity
+db.Order_Item.insertMany([
+	{
+		_id: 1,
+		Order_Date: '2023-09-09',
+		Updated_at: Date(),
+		Users_id: 1,
+		Items_id: 2,
+	},
+	{
+		_id: 2,
+		Order_Date: '2023-09-09',
+		Updated_at: Date(),
+		Users_id: 2,
+		Items_id: 1,
+	},
+]);
+// User_Order_item Entity
+db.User_Order_item.insertMany([
+	{ _id: 1, Order_item_id: 2, Users_id: 1 },
+	{ _id: 2, Order_item_id: 1, Users_id: 2 },
+]);
+// Item_User_item Entity
+db.Item_User_item.insertMany([
+	{ _id: 1, Order_item_id: 2, Items_id: 1 },
+	{ _id: 2, Order_item_id: 1, Items_id: 2 },
+]);
+// Order_Details Entity
 
-// Create a new MongoClient
-const client = new MongoClient(url, { useUnifiedTopology: true });
+db.Order_Details.insertOne({
+	_id: 1,
+	Order_Quantity: 20,
+	Expected_Date: '2023-10-02',
+	Order_Item_id: 1,
+	Users_Id: 1,
+});
+db.Order_Details.insertOne({
+	_id: 2,
+	Order_Quantity: 20,
+	Expected_Date: '2023-10-02',
+	Order_Item_id: 2,
+	Users_Id: 1,
+});
 
-// Function to connect to the database
-async function connectDB() {
-    try {
-        await client.connect();
-        console.log('Connected to MongoDB');
-    } catch (err) {
-        console.error('Error connecting to MongoDB:', err);
-    }
-}
+// Supplier Entity
+db.Supplier.insertOne({
+	_id: 1,
+	Name: 'James',
+	Address: 'Jos',
+	Order_Details_id: 2,
+});
+db.Supplier.insertOne({
+	_id: 2,
+	Name: 'Peter',
+	Address: 'Edo',
+	Order_Details_id: 1,
+});
 
-// Function to close the database connection
-function closeDB() {
-    client.close();
-    console.log('Disconnected from MongoDB');
-}
+// Deliver Entity
 
-// Create all the entities as collections
-async function createEntities() {
-    const db = client.db(dbName);
+db.Deliver.insertOne({ _id: 1, Deliver_Date: '2023-09-23', Item_Id: 1 });
+db.Deliver.insertOne({ _id: 2, Deliver_Date: '2023-19-23', Item_Id: 1 });
 
-    // Create Categories collection
-    await db.createCollection('categories');
-    console.log('Categories collection created');
+// Deliver_Details Entity
+db.Deliver_Details({
+	_id: 1,
+	Deliver_Quantities: 23,
+	Deliver_Date: '2023-11-23',
+	Deliver_id: 2,
+	Created_at: Date(),
+});
+db.Deliver_Details({
+	_id: 2,
+	Deliver_Quantities: 523,
+	Deliver_Date: '2023-12-23',
+	Deliver_id: 1,
+	Created_at: Date(),
+});
 
-    // Create Items collection
-    await db.createCollection('items');
-    console.log('Items collection created');
+// Customer Entity
 
-    // Create Users collection
-    await db.createCollection('users');
-    console.log('Users collection created');
+db.Customer.insertOne({
+	_id: 1,
+	Name: 'Job',
+	Address: 'Kogi',
+	Deliver_Details_Id: 1,
+	Users_Id: 2,
+});
+db.Customer.insertOne({
+	_id: 2,
+	Name: 'Kriss',
+	Address: 'Jos',
+	Deliver_Details_Id: 2,
+	Users_Id: 1,
+});
 
-    // Create Orders collection
-    await db.createCollection('orders');
-    console.log('Orders collection created');
-}
+//  3 (c) Getting Records from Entities
+// Get single record
+db.Customer.findOne({ _id: 2 });
+// Get All
+db.Users.find();
 
-// Insert records into the entities
-async function insertRecords() {
-    const db = client.db(dbName);
+// 3 (d) Update Records
 
-    // Insert sample category
-    await db.collection('categories').insertOne({ categoryName: 'Electronics' });
+db.Customer.updateOne({ _id: 1 }, { $set: { Name: 'Jack' } });
+db.Supplier.updateMany(
+	{ _id: 1 },
+	{ $set: { Name: 'Johnson', Address: 'Jos' } }
+);
 
-    // Insert sample item
-    await db.collection('items').insertOne({
-        itemName: 'Smartphone',
-        price: 499.99,
-        size: 'medium',
-        category: 'Electronics',
-    });
+// 3 (e) Deleting Record
 
-    // Insert sample user
-    await db.collection('users').insertOne({ userType: 'admin' });
-}
-
-// Get records from two or more entities
-async function getRecords() {
-    const db = client.db(dbName);
-
-    // Get items with their categories
-    const itemsWithCategories = await db
-        .collection('items')
-        .aggregate([
-            {
-                $lookup: {
-                    from: 'categories',
-                    localField: 'category',
-                    foreignField: 'categoryName',
-                    as: 'categoryInfo',
-                },
-            },
-        ])
-        .toArray();
-
-    console.log('Items with Categories:', itemsWithCategories);
-}
-
-// Update records in two or more entities
-async function updateRecords() {
-    const db = client.db(dbName);
-
-    // Update an item and its category
-    await db.collection('items').updateOne(
-        { itemName: 'Smartphone' },
-        {
-            $set: {
-                price: 549.99,
-            },
-        }
-    );
-}
-
-// Delete records from two or more entities
-async function deleteRecords() {
-    const db = client.db(dbName);
-
-    // Delete an item and its associated orders
-    await db.collection('items').deleteOne({ itemName: 'Smartphone' });
-    await db.collection('orders').deleteMany({ item: 'Smartphone' });
-}
-
-// Main function
-async function main() {
-    await connectDB();
-    await createEntities();
-    await insertRecords();
-    await getRecords();
-    await updateRecords();
-    await deleteRecords();
-    closeDB();
-}
-
-main();
+db.Role.deleteOne({ _id: 1 });
+db.Deliver.deleteMany({ _d: 1 });
