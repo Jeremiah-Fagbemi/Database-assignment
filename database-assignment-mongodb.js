@@ -28,7 +28,7 @@ db.Users.insertMany([
 		Sex: 'Male',
 	},
 	{
-		_id: 1,
+		_id: 2,
 		Name: 'Peter',
 		Address: 'Kogi',
 		Password: 'Peter',
